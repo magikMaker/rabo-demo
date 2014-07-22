@@ -1,0 +1,74 @@
+<html ng-app="app">
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+<body ng-controller="AppController">
+
+<img src="http://www.permasteelisa.nl/topics/rabobank_02.jpg">
+
+<h1>Transactie overzicht</h1>
+
+<p>totaal: {{getTotal()|currency:"&euro; "}}</p>
+
+<input ng-model="name" placeholder="name">
+<input ng-model="amount" placeholder="amount">
+
+<button ng-click="addTransaction()" ng-disabled="isDisabled()">Add</button>
+
+<ul>
+    <li ng-repeat="transaction in transactions">
+        {{transaction.name}}
+        <span>{{transaction.amount|currency:"&euro; "}}</span>
+    </li>
+</ul>
+
+<script src="scripts.js"></script>
+<script>
+var app = angular.module('app', ['firebase']);
+app.controller('AppController', function($scope, $firebase){
+    var dbRef = new Firebase("https://obar.firebaseio.com/");
+    $scope.transactions = $firebase(dbRef);
+    
+    $scope.isDisabled = function(){
+        return $scope.amount == '' || $scope.name == '';
+    };
+    
+//     $scope.transactions = [
+//         {
+//             name: 'Petra',
+//             amount: 200
+//         },
+//         {
+//             name: 'Angelique',
+//             amount: 250
+//         }
+//     ];
+
+    $scope.addTransaction = function(){
+        var transaction = {
+            name: $scope.name,
+            amount: parseInt($scope.amount)
+        }
+        $scope.transactions.$add(transaction);
+        $scope.name = '';
+        $scope.amount = '';
+    };
+    
+    $scope.getTotal = function(){
+        var total = 0;
+        console.log($scope.transactions);
+        /*
+        if($scope.transactions && $scope.transactions.length  > 0){
+            $scope.transactions.forEach(function(el){
+                total += el.amount
+            });
+
+        }*/
+         return total;
+    };
+    
+    
+});
+</script>
+</body>
+</html>
