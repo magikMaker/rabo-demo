@@ -5,7 +5,7 @@
 </head>
 <body ng-controller="AppController">
 
-<img src="http://klaasantonmulder.files.wordpress.com/2011/08/utrecht-rabo-172.jpg">
+<img src="http://rabo.demo123.nl/rabobank.jpg">
 
 <h1>Transacties</h1>
 <p>Totaal: {{total|currency:"&euro; "}}</p>
@@ -23,9 +23,11 @@
 <script>
 var app = angular.module('app', ['firebase']);
 app.controller('AppController', function($scope, $firebase){
-    var db = new Firebase('https://obar.firebaseio.com/demo');
+    
+    var db = new Firebase('https://rabo.firebaseio.com/demo123');
     $scope.items = $firebase(db);
     $scope.total = 0;
+    
     $scope.addItem = function(){
         var newItem = {
             name: $scope.name,
