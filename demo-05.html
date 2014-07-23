@@ -1,6 +1,5 @@
 <html ng-app="app">
 <head>
-<title>Rabo demo</title>
 <link rel="stylesheet" href="http://rabo.demo123.nl/style.css">
 </head>
 <body ng-controller="AppController">
@@ -11,7 +10,7 @@
 <p>Totaal: {{total|currency:"&euro; "}}</p>
 <input ng-model="name" placeholder="naam">
 <input ng-model="amount" placeholder="bedrag">
-<button ng-click="addItem()" ng-disabled="isDisabled()">toevoegen</button>
+<button ng-click="addItem()">toevoegen</button>
 
 <ul>
   <li ng-repeat="item in items">
@@ -19,31 +18,22 @@
     <span>{{item.amount|currency:"&euro; "}}</span>
   </li>
 </ul>
-<script src="http://rabo.demo123.nl/scripts.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.20/angular.min.js"></script>
 <script>
-var app = angular.module('app', ['firebase']);
-app.controller('AppController', function($scope, $firebase){
-    var db = new Firebase('https://obar.firebaseio.com/demo');
-    $scope.items = $firebase(db);
+var app = angular.module('app', []);
+app.controller('AppController', function($scope){
+    $scope.items = [];
     $scope.total = 0;
     $scope.addItem = function(){
         var newItem = {
             name: $scope.name,
             amount: $scope.amount
         }
-        $scope.items.$add(newItem);
+        $scope.total += parseInt($scope.amount);
+        $scope.items.push(newItem);
         $scope.name = '';
         $scope.amount = '';
     };
-    
-    $scope.isDisabled = function(){
-        return !$scope.amount || !$scope.name;
-    };
-
-    db.on('child_added', function(snapshot){
-        $scope.total += parseInt(snapshot.val().amount);
-    });
-    
 });
 </script>
 </body>
