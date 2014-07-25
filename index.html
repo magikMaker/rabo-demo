@@ -49,7 +49,7 @@ app.controller('AppController', function($scope, $firebase){
     });
 
     db.on('child_removed', function(snapshot){
-        $scope.total -= parseInt(parseInt(snapshot.val().amount) || 0);
+        $scope.total -= parseInt(snapshot.val().amount) || 0;
     });
     
 });
